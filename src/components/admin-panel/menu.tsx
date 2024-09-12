@@ -60,11 +60,11 @@ export function Menu({ isOpen }: MenuProps) {
 												<TooltipTrigger asChild>
 													<Button
 														variant={active ? "default" : "ghost"}
-														className="w-full justify-start h-10 mb-2"
+														className="w-full justify-start h-10 mb-2 hover:bg-primary"
 														asChild
 													>
 														<Link href={href}>
-															<span className={cn(isOpen ? "mr-4" : "")}>
+															<span className={isOpen ? "mr-4" : ""}>
 																<Icon size={18} />
 															</span>
 															<p

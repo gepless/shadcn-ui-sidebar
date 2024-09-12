@@ -52,5 +52,5 @@ export default function StatCard({
 }
 
 export function StatCardSkeleton() {
-	return <Skeleton className="bg-neutral-200 w-full h-[126px] rounded-lg" />;
+	return <Skeleton className="w-full h-[98px] rounded-lg" />;
 }

@@ -22,7 +22,7 @@ export default async function UnitCard({ imei }: { imei: string }) {
 		},
 	);
 	let Icon = ShieldQuestion;
-	switch (unit?.vehicle.type) {
+	switch (unit?.vehicle?.type) {
 		case "bus":
 			Icon = Bus;
 			break;
@@ -40,20 +40,22 @@ export default async function UnitCard({ imei }: { imei: string }) {
 		<Card>
 			<CardContent className="grid grid-cols-5 p-4">
 				<div className="flex flex-col justify-between">
-					<p>{unit?.name}</p>
+					<p className="font-bold">{unit?.name ? unit.name : "Unnamed"}</p>
 					<Icon size={128} />
-					<p>{unit?.vehicle.type ? unit.vehicle.type : "Undefined"}</p>
+					<p>{unit?.vehicle?.type ? unit.vehicle.type : "Undefined"}</p>
 				</div>
 				<div className="flex flex-col justify-between">
-					<p>Make</p>
-					<p>{unit?.vehicle.make}</p>
-					<p>Model</p>
-					<p>{unit?.vehicle.model}</p>
-					<p>Year</p>
-					<p>{unit?.vehicle.year}</p>
+					<p className="font-bold">Make</p>
+					<p>{unit?.vehicle?.make ? unit?.vehicle?.make : "Undefined"}</p>
+					<p className="font-bold">Model</p>
+					<p>{unit?.vehicle?.model ? unit?.vehicle?.model : "Undefined"}</p>
+					<p className="font-bold">Year</p>
+					<p>{unit?.vehicle?.year ? unit?.vehicle?.year : "Undefined"}</p>
+					<p className="font-bold">Serial No.</p>
+					<p>{imei}</p>
 				</div>
 				<div className="col-span-3">
-					<p className="mb-2">Vehicle Stats</p>
+					<p className="font-bold mb-2">Vehicle Stats</p>
 					<div className="flex flex-row gap-2">
 						<StatCard
 							title="Fuel Saved"
@@ -75,6 +77,7 @@ export default async function UnitCard({ imei }: { imei: string }) {
 							inverted
 						/>
 					</div>
+					{/* <div>Config</div> */}
 				</div>
 			</CardContent>
 		</Card>

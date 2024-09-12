@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import gelogo from "@/app/GE_T-optimized.svg";
+import gelogo from "@/app/GE_T-optimized.png";
 import { Menu } from "@/components/admin-panel/menu";
 import { SidebarToggle } from "@/components/admin-panel/sidebar-toggle";
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";

@@ -1,8 +1,10 @@
 import { ContentLayout } from "@/components/admin-panel/content-layout";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getUnitEvents, getUnitInfo } from "@/lib/data";
-import { Bus, Car, ShieldQuestion, Truck } from "lucide-react";
+import { ArrowLeft, Bus, Car, ShieldQuestion, Truck } from "lucide-react";
 import type { Metadata, ResolvingMetadata } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
 import UnitEventCard, { UnitEventCardSkeleton } from "../unit-event-card";
 import EventsChart from "./events-chart";
@@ -55,6 +57,19 @@ export default async function UnitPage({ params }: UnitPageProps) {
 			subtitle={params.imei}
 			icon={Icon}
 		>
+			<div className="flex justify-between -mt-4 mb-4">
+				<Button size="sm" asChild>
+					<Link href="/fleet">
+						<ArrowLeft /> Back to fleet
+					</Link>
+				</Button>
+				{/* <Button size="sm" asChild>
+					<Link href="#">
+						Edit vehicle{""}
+						<Edit />
+					</Link>
+				</Button> */}
+			</div>
 			<Suspense fallback={<UnitCardSkeleton />}>
 				<UnitCard imei={params.imei} />
 			</Suspense>

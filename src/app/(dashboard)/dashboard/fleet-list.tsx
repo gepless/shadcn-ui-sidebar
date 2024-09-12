@@ -75,7 +75,7 @@ async function FleetListUnitCard({ unit }: { unit: Unit }) {
 }
 
 function FleetListUnitCardSkeleton() {
-	return <Skeleton className="bg-neutral-200 w-full h-[126px] rounded-lg" />;
+	return <Skeleton className="w-full h-[66px] rounded-lg" />;
 }
 
 export function FleetListCardSkeleton() {
@@ -88,10 +88,6 @@ export function FleetListCardSkeleton() {
 			</CardHeader>
 			<CardContent>
 				<div className="grid gap-4">
-					<FleetListUnitCardSkeleton />
-					<FleetListUnitCardSkeleton />
-					<FleetListUnitCardSkeleton />
-					<FleetListUnitCardSkeleton />
 					<FleetListUnitCardSkeleton />
 				</div>
 			</CardContent>

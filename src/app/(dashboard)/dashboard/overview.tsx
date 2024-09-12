@@ -1,6 +1,5 @@
-import StatCard from "@/components/stat-card";
+import StatCard, { StatCardSkeleton } from "@/components/stat-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { getCompanyCumulativePower, getCompanyUnitCount } from "@/lib/data";
 
 export default async function OverviewCard() {
@@ -72,10 +71,10 @@ export function OverviewCardSkeleton() {
 			</CardHeader>
 			<CardContent>
 				<div className="grid grid-cols-4 gap-4">
-					<Skeleton className="w-full h-[98px] rounded-lg" />
-					<Skeleton className="w-full h-[98px] rounded-lg" />
-					<Skeleton className="w-full h-[98px] rounded-lg" />
-					<Skeleton className="w-full h-[98px] rounded-lg" />
+					<StatCardSkeleton />
+					<StatCardSkeleton />
+					<StatCardSkeleton />
+					<StatCardSkeleton />
 				</div>
 			</CardContent>
 		</Card>
