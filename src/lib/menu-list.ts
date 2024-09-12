@@ -1,101 +1,36 @@
-import {
-  Tag,
-  Users,
-  Settings,
-  Bookmark,
-  SquarePen,
-  LayoutGrid,
-  LucideIcon
-} from "lucide-react";
+import { Car, Headset, LayoutGrid } from "lucide-react";
+import type { MenuGroup } from "./definitions";
 
-type Submenu = {
-  href: string;
-  label: string;
-  active: boolean;
-};
-
-type Menu = {
-  href: string;
-  label: string;
-  active: boolean;
-  icon: LucideIcon
-  submenus: Submenu[];
-};
-
-type Group = {
-  groupLabel: string;
-  menus: Menu[];
-};
-
-export function getMenuList(pathname: string): Group[] {
-  return [
-    {
-      groupLabel: "",
-      menus: [
-        {
-          href: "/dashboard",
-          label: "Dashboard",
-          active: pathname.includes("/dashboard"),
-          icon: LayoutGrid,
-          submenus: []
-        }
-      ]
-    },
-    {
-      groupLabel: "Contents",
-      menus: [
-        {
-          href: "",
-          label: "Posts",
-          active: pathname.includes("/posts"),
-          icon: SquarePen,
-          submenus: [
-            {
-              href: "/posts",
-              label: "All Posts",
-              active: pathname === "/posts"
-            },
-            {
-              href: "/posts/new",
-              label: "New Post",
-              active: pathname === "/posts/new"
-            }
-          ]
-        },
-        {
-          href: "/categories",
-          label: "Categories",
-          active: pathname.includes("/categories"),
-          icon: Bookmark,
-          submenus: []
-        },
-        {
-          href: "/tags",
-          label: "Tags",
-          active: pathname.includes("/tags"),
-          icon: Tag,
-          submenus: []
-        }
-      ]
-    },
-    {
-      groupLabel: "Settings",
-      menus: [
-        {
-          href: "/users",
-          label: "Users",
-          active: pathname.includes("/users"),
-          icon: Users,
-          submenus: []
-        },
-        {
-          href: "/account",
-          label: "Account",
-          active: pathname.includes("/account"),
-          icon: Settings,
-          submenus: []
-        }
-      ]
-    }
-  ];
+export function getMenuList(pathname: string): MenuGroup[] {
+	return [
+		{
+			groupLabel: "",
+			menus: [
+				{
+					id: 1,
+					href: "/dashboard",
+					label: "Dashboard",
+					active: pathname.includes("/dashboard"),
+					icon: LayoutGrid,
+					submenus: [],
+				},
+				{
+					id: 2,
+					href: "/fleet",
+					label: "Fleet",
+					active: pathname.includes("/fleet"),
+					icon: Car,
+					submenus: [],
+				},
+				{
+					id: 3,
+					href: "/support",
+					label: "Support",
+					active: pathname.includes("/support"),
+					icon: Headset,
+					submenus: [],
+				},
+			],
+		},
+	];
 }

@@ -1,24 +1,29 @@
-import { ModeToggle } from "@/components/mode-toggle";
-import { UserNav } from "@/components/admin-panel/user-nav";
 import { SheetMenu } from "@/components/admin-panel/sheet-menu";
+import { ModeToggle } from "@/components/mode-toggle";
+import type { NavbarProps } from "@/lib/definitions";
+import { SelectedTeamSwitcher, UserButton } from "@stackframe/stack";
 
-interface NavbarProps {
-  title: string;
-}
-
-export function Navbar({ title }: NavbarProps) {
-  return (
-    <header className="sticky top-0 z-10 w-full bg-background/95 shadow backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:shadow-secondary">
-      <div className="mx-4 sm:mx-8 flex h-14 items-center">
-        <div className="flex items-center space-x-4 lg:space-x-0">
-          <SheetMenu />
-          <h1 className="font-bold">{title}</h1>
-        </div>
-        <div className="flex flex-1 items-center justify-end">
-          <ModeToggle />
-          <UserNav />
-        </div>
-      </div>
-    </header>
-  );
+export function Navbar({ title, subtitle, icon: Icon }: NavbarProps) {
+	return (
+		<header className="sticky top-3 pl-1 z-10 w-full bg-neutral-200 dark:bg-neutral-800">
+			<div className="mx-4 sm:mx-8 flex h-14 items-center">
+				<div className="flex flex-auto gap-2">
+					<SheetMenu />
+					<Icon />
+					<div>
+						<h2 className="text-xs">{subtitle}</h2>
+						<h1 className="font-bold">{title}</h1>
+					</div>
+				</div>
+				<div className="flex flex-auto items-center">
+					<p className="text-sm">Company: </p>
+					<SelectedTeamSwitcher />
+				</div>
+				<div className="flex flex-auto items-center justify-end">
+					<ModeToggle />
+					<UserButton />
+				</div>
+			</div>
+		</header>
+	);
 }
