@@ -1,15 +1,20 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { stackServerApp } from "./stack";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export async function middleware(request: NextRequest) {
-	const user = await stackServerApp.getUser();
-	if (!user) {
-		return NextResponse.redirect(new URL("/handler/sign-in", request.url));
-	}
-	return NextResponse.next();
-}
+const isProtectedRoute = createRouteMatcher([
+	"/dashboard(.*)",
+	"/fleet(.*)",
+	"/support(.*)",
+]);
+
+export default clerkMiddleware((auth, request) => {
+	if (isProtectedRoute(request)) auth().protect();
+});
 
 export const config = {
-	// Make sure not to protect the root URL, as it would prevent users from accessing static Next.js files or Stack's /handler path
-	matcher: ["/dashboard/:path*", "/fleet/:path*", "/support/:path*"],
+	matcher: [
+		// Skip Next.js internals and all static files, unless found in search params
+		"/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+		// Always run for API routes
+		"/(api|trpc)(.*)",
+	],
 };

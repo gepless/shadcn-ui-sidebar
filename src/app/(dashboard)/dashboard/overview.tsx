@@ -1,15 +1,18 @@
 import StatCard from "@/components/stat-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getAllUnitsCount, getTotalCumulativePower } from "@/lib/data";
+import { getCompanyCumulativePower, getCompanyUnitCount } from "@/lib/data";
 
 export default async function OverviewCard() {
-	const totalCumulativePower = await getTotalCumulativePower();
-	const allVehiclesCount = await getAllUnitsCount();
+	const allVehiclesCount = await getCompanyUnitCount();
 
-	const vehiclesCount = allVehiclesCount.toLocaleString("da-DK", {
-		maximumFractionDigits: 0,
-	});
+	const totalCumulativePower = await getCompanyCumulativePower();
+
+	const vehiclesCount = allVehiclesCount
+		? allVehiclesCount.toLocaleString("da-DK", {
+				maximumFractionDigits: 0,
+			})
+		: null;
 	const cumulativePower = (
 		totalCumulativePower.cumulative_power / 1000
 	).toLocaleString("da-DK", {
@@ -34,7 +37,7 @@ export default async function OverviewCard() {
 						title="Vehicles"
 						type="vehicle"
 						unit=""
-						value={vehiclesCount}
+						value={vehiclesCount ? vehiclesCount : "--"}
 					/>
 					<StatCard
 						title="Fuel Saved"

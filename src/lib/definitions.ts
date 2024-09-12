@@ -23,15 +23,28 @@ export type MenuGroup = {
 
 export type Unit = {
 	imei: string;
-	info?: Info;
+	info?: UnitInfo;
 };
 
-export type Info = {
+export type UnitInfo = {
 	name: string;
 	panel_size: number;
-	battery_type: number;
+	battery_type: 0 | 1 | 2 | 3 | 4;
 	battery_voltage: number;
-	vehicle: LucideIcon;
+	vehicle: {
+		make: string;
+		model: string;
+		year: number;
+		type?: string;
+	};
+};
+
+export type UnitEvent = {
+	timestamp: string;
+	battery_amps: number;
+	battery_volt: number;
+	panel_amps: number;
+	panel_volt: number;
 };
 
 export interface CollapseMenuButtonProps {

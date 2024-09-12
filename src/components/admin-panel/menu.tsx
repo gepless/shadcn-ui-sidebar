@@ -16,12 +16,12 @@ import {
 import type { MenuProps } from "@/lib/definitions";
 import { getMenuList } from "@/lib/menu-list";
 import { cn } from "@/lib/utils";
-import { UserButton, useUser } from "@stackframe/stack";
+import { UserButton, useUser } from "@clerk/nextjs";
 
 export function Menu({ isOpen }: MenuProps) {
 	const pathname = usePathname();
 	const menuList = getMenuList(pathname);
-	const user = useUser();
+	const { user } = useUser();
 
 	return (
 		<ScrollArea className="[&>div>div[style]]:!block">
@@ -104,20 +104,14 @@ export function Menu({ isOpen }: MenuProps) {
 						<TooltipProvider disableHoverableContent>
 							<Tooltip delayDuration={100}>
 								<TooltipTrigger>
-									<div className="flex">
-										<UserButton />
-										{isOpen && (
-											<div className="pl-4">
-												<p>{user?.displayName}</p>
-												<p className="text-xs">{user?.primaryEmail}</p>
-											</div>
-										)}
+									<div className="flex pb-1">
+										<UserButton showName={isOpen} />
 									</div>
 								</TooltipTrigger>
 								{!isOpen && (
 									<TooltipContent side="right" className="text-center">
-										<p>{user?.displayName}</p>
-										<p>{user?.primaryEmail}</p>
+										<p>{user?.fullName}</p>
+										<p>{user?.primaryEmailAddress?.emailAddress}</p>
 									</TooltipContent>
 								)}
 							</Tooltip>

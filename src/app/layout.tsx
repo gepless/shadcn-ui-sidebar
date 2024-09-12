@@ -1,7 +1,7 @@
-import { StackProvider, StackTheme } from "@stackframe/stack";
+import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
-import { stackServerApp } from "../stack";
 
 import "./globals.css";
 
@@ -19,16 +19,18 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
-			<body className={GeistSans.className}>
-				<StackProvider app={stackServerApp}>
-					<StackTheme>
-						<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-							{children}
-						</ThemeProvider>
-					</StackTheme>
-				</StackProvider>
-			</body>
-		</html>
+		<ClerkProvider
+			appearance={{
+				baseTheme: dark,
+			}}
+		>
+			<html lang="en">
+				<body className={GeistSans.className}>
+					<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+						{children}
+					</ThemeProvider>
+				</body>
+			</html>
+		</ClerkProvider>
 	);
 }

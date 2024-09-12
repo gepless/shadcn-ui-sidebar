@@ -1,7 +1,7 @@
 "use server";
 
-import { stackServerApp } from "@/stack";
-import type { Unit } from "./definitions";
+import { auth } from "@clerk/nextjs/server";
+import type { Unit, UnitEvent, UnitInfo } from "./definitions";
 
 const unitServiceURL = process.env.UNIT_SERVICE_URL;
 const crmServiceURL = process.env.CRM_SERVICE_URL;
@@ -18,18 +18,18 @@ export async function getTotalCumulativePower() {
 }
 
 // POST
-export async function getTotalCumulativePowerGroup(imeis: string[]) {
+export async function getTotalCumulativePowerGroup(imeis: string) {
 	try {
 		const res = await fetch(`${unitServiceURL}/total/cumulativepower/group`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ imeis }),
+			body: imeis,
 		});
-		const count = await res.json();
+		const power = await res.json();
 
-		return count.length;
+		return power;
 	} catch (error) {
 		console.error(error);
 	}
@@ -68,12 +68,30 @@ export async function getUnitCumulativePower(imei: string) {
 	}
 }
 
-export async function getUnitEvents(imei: string) {
+export async function getUnitEvents(
+	imei: string,
+	limit?: number,
+): Promise<UnitEvent[] | undefined> {
 	try {
-		const res = await fetch(`${unitServiceURL}/unit/${imei}/events`);
+		const res = await fetch(
+			`${unitServiceURL}/unit/${imei}/events?limit=${limit ? limit : "100"}`,
+		);
 		const events = await res.json();
 
 		return events;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+export async function getUnitLatestEvent(
+	imei: string,
+): Promise<UnitEvent | undefined> {
+	try {
+		const res = await fetch(`${unitServiceURL}/unit/${imei}/events?limit=1`);
+		const events = await res.json();
+
+		return events[0];
 	} catch (error) {
 		console.error(error);
 	}
@@ -90,7 +108,7 @@ export async function getUnitLocations(imei: string) {
 	}
 }
 
-export async function getUnitInfo(imei: string) {
+export async function getUnitInfo(imei: string): Promise<UnitInfo | undefined> {
 	try {
 		const res = await fetch(`${crmServiceURL}/unit/${imei}/info`);
 		const info = await res.json();
@@ -98,29 +116,28 @@ export async function getUnitInfo(imei: string) {
 		return info;
 	} catch (error) {
 		console.error(error);
+
+		return undefined;
 	}
 }
 
 export async function getCompanyUnits(limit?: number): Promise<Unit[]> {
+	const { orgId } = auth();
+	let companySlug: string;
+	switch (orgId) {
+		case "org_2ZlXJv5gWfE7eJc4sygFONJCOwc":
+			companySlug = "greenenergy";
+			break;
+		case "org_2lHTFVB4vAnIfJ2a6z1eoVwwmCW":
+			companySlug = "SamatInternational";
+			break;
+		case "org_2hSbvY6VZe82cwEzRx7GY9CQlW2":
+			companySlug = "DSV";
+			break;
+		default:
+			companySlug = "";
+	}
 	try {
-		const user = await stackServerApp.getUser();
-		if (!user) {
-			throw new Error("User not logged in");
-		}
-		const team = user?.selectedTeam;
-		if (!team) {
-			throw new Error("User not in a team");
-		}
-		console.log("team", team.id);
-		let companySlug: string;
-		switch (team.id) {
-			case "1861c5c7-ddf4-46b4-ab43-c96c6edb7383":
-				companySlug = "SamatInternational";
-				break;
-			default:
-				companySlug = "greenenergy";
-				break;
-		}
 		const res = await fetch(
 			`${crmServiceURL}/company/${companySlug}/units${limit ? `?limit=${limit}` : ""}`,
 		);
@@ -136,23 +153,28 @@ export async function getCompanyUnits(limit?: number): Promise<Unit[]> {
 	}
 }
 
-export async function getCompanyCumulativePower() {
-	try {
-		const units = await getCompanyUnits();
-		const imeis = units.map((unit) => unit.imei);
-		const power = await getTotalCumulativePowerGroup(imeis);
-
-		return power.json();
-	} catch (error) {
-		console.error(error);
-	}
-}
-
 export async function getCompanyUnitCount() {
 	try {
 		const units = await getCompanyUnits();
 
 		return units.length;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+export async function getCompanyCumulativePower() {
+	try {
+		const companyUnits = await getCompanyUnits();
+		const imeis = companyUnits.map((unit) => {
+			return {
+				imei: unit.imei,
+			};
+		});
+		const totalCumulativePower = await getTotalCumulativePowerGroup(
+			JSON.stringify(imeis),
+		);
+		return totalCumulativePower;
 	} catch (error) {
 		console.error(error);
 	}
