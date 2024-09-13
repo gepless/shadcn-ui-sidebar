@@ -67,3 +67,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Place username behind button on <UserButton /> Clerk component */
+.cl-userButtonBox {
+  flex-flow: row-reverse;
+}

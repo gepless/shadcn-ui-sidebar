@@ -1,7 +1,7 @@
 import { SheetMenu } from "@/components/admin-panel/sheet-menu";
-import { ModeToggle } from "@/components/mode-toggle";
 import type { NavbarProps } from "@/lib/definitions";
-import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
+import { CompanySwitcher } from "./company-switcher";
+import { UserNav } from "./user-nav";
 
 export function Navbar({ title, subtitle, icon: Icon }: NavbarProps) {
 	return (
@@ -16,11 +16,10 @@ export function Navbar({ title, subtitle, icon: Icon }: NavbarProps) {
 					</div>
 				</div>
 				<div className="flex flex-auto items-center">
-					<OrganizationSwitcher hidePersonal />
+					<CompanySwitcher />
 				</div>
 				<div className="flex flex-auto items-center justify-end">
-					<ModeToggle />
-					<UserButton />
+					<UserNav />
 				</div>
 			</div>
 		</header>

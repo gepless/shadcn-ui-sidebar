@@ -1,6 +1,8 @@
 "use client";
 
-import { Ellipsis } from "lucide-react";
+import { dark } from "@clerk/themes";
+import { Ellipsis, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -22,6 +24,7 @@ export function Menu({ isOpen }: MenuProps) {
 	const pathname = usePathname();
 	const menuList = getMenuList(pathname);
 	const { user } = useUser();
+	const { setTheme, theme } = useTheme();
 
 	return (
 		<ScrollArea className="[&>div>div[style]]:!block">
@@ -105,7 +108,28 @@ export function Menu({ isOpen }: MenuProps) {
 							<Tooltip delayDuration={100}>
 								<TooltipTrigger>
 									<div className="flex pb-1">
-										<UserButton showName={isOpen} />
+										<UserButton
+											appearance={{
+												baseTheme: theme === "dark" ? dark : undefined,
+											}}
+											showName={isOpen}
+										>
+											<UserButton.MenuItems>
+												<UserButton.Action
+													label={`Switch to ${theme === "dark" ? "lightmode" : "darkmode"}`}
+													labelIcon={
+														theme === "dark" ? (
+															<Sun size={16} />
+														) : (
+															<Moon size={16} />
+														)
+													}
+													onClick={() =>
+														setTheme(theme === "dark" ? "light" : "dark")
+													}
+												/>
+											</UserButton.MenuItems>
+										</UserButton>
 									</div>
 								</TooltipTrigger>
 								{!isOpen && (

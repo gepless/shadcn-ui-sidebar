@@ -21,10 +21,10 @@ export function Sidebar() {
 			)}
 		>
 			<SidebarToggle isOpen={sidebar?.isOpen} setIsOpen={sidebar?.setIsOpen} />
-			<div className="relative flex flex-col px-3 py-4 overflow-y-auto bg-background m-4 rounded-lg">
+			<div className="relative flex flex-col px-3 py-4 overflow-y-auto bg-background m-4 rounded-2xl">
 				<div
 					className={cn(
-						"flex justify-center mb-1",
+						"flex justify-center mt-2",
 						sidebar?.isOpen ? "translate-x-0" : "translate-x-1",
 					)}
 				>

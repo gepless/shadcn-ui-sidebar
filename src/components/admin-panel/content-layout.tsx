@@ -10,7 +10,7 @@ export function ContentLayout({
 	return (
 		<>
 			<Navbar title={title} subtitle={subtitle} icon={icon} />
-			<div className="container min-h-[calc(100vh_-_112px)] pt-8 pb-8 px-4 sm:px-8">
+			<div className="container min-h-[calc(100vh_-_8rem)] pt-8 pb-0">
 				{children}
 			</div>
 		</>

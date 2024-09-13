@@ -1,6 +1,7 @@
 import { ContentLayout } from "@/components/admin-panel/content-layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
 	Tooltip,
@@ -13,25 +14,18 @@ import type { Unit } from "@/lib/definitions";
 import { ArrowRight, Bus, Car, ShieldQuestion, Truck } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
+import Filters from "./filters";
 import UnitEventCard, { UnitEventCardSkeleton } from "./unit-event-card";
 export default async function FleetPage() {
-	const units = await getCompanyUnits();
+	const units = await getCompanyUnits(10);
 	return (
 		<ContentLayout title="Fleet" subtitle={units.length.toString()} icon={Car}>
 			<div className="grid grid-cols-4 gap-4">
-				<Card>
-					<CardHeader>
-						<CardTitle>Filters</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<p>Filters go here</p>
-					</CardContent>
-				</Card>
-				<Card className="col-span-3">
-					<CardHeader>
-						<CardTitle>Fleet overview</CardTitle>
-					</CardHeader>
-					<CardContent className="grid gap-4">
+				<div className="sticky">
+					<Filters />
+				</div>
+				<div className="col-span-3">
+					<ScrollArea className="h-[calc(100vh_-_6rem)] -mr-2">
 						{units.map((unit) => (
 							<Suspense
 								key={unit.imei}
@@ -40,8 +34,8 @@ export default async function FleetPage() {
 								<FleetListUnitCard unit={unit} />
 							</Suspense>
 						))}
-					</CardContent>
-				</Card>
+					</ScrollArea>
+				</div>
 			</div>
 		</ContentLayout>
 	);
@@ -64,13 +58,13 @@ async function FleetListUnitCard({ unit }: { unit: Unit }) {
 			break;
 	}
 	return (
-		<Card className="bg-neutral-100 dark:bg-neutral-800">
-			<div className="grid grid-cols-5">
+		<Card className="mb-4 last:mb-0 mr-4">
+			<div className="grid grid-cols-4">
 				<div className="flex flex-col justify-between p-4">
 					<TooltipProvider>
 						<Tooltip>
 							<TooltipTrigger>
-								<p className="font-bold truncate">
+								<p className="font-bold truncate text-left">
 									{unit.info ? unit.info.name : "Unnamed"}
 								</p>
 							</TooltipTrigger>
@@ -84,7 +78,7 @@ async function FleetListUnitCard({ unit }: { unit: Unit }) {
 						{unit.info?.vehicle.type ? unit.info?.vehicle.type : "Undefined"}
 					</p>
 				</div>
-				<div className="flex flex-col justify-between p-4">
+				<div className="flex flex-col justify-between py-4 pl-4 pr-2">
 					<p className="font-bold">Make</p>
 					<p>{unit.info ? unit.info.vehicle.make : "Undefined"}</p>
 					<p className="font-bold">Model</p>
@@ -103,11 +97,11 @@ async function FleetListUnitCard({ unit }: { unit: Unit }) {
 						</Tooltip>
 					</TooltipProvider>
 				</div>
-				<div className="col-span-3">
+				<div className="col-span-2">
 					<div className="flex flex-row justify-between items-center h-full">
 						<div className="p-2">
 							<Suspense fallback={<UnitEventCardSkeleton />}>
-								<UnitEventCard light imei={unit.imei} />
+								<UnitEventCard imei={unit.imei} />
 							</Suspense>
 						</div>
 						<Button asChild className="p-1 h-full rounded-r-xl rounded-l-none">

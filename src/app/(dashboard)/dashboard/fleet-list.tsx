@@ -51,16 +51,16 @@ async function FleetListUnitCard({ unit }: { unit: Unit }) {
 		<Card key={unit.imei} className="bg-neutral-100 dark:bg-neutral-800">
 			<div className="grid grid-cols-3 align-middle">
 				<div className="p-2">
-					<p>Vehicle</p>
-					<p className="truncate">{unit.info ? unit.info.name : unit.imei}</p>
+					<p className="font-bold">Vehicle</p>
+					<p className="truncate">{unit.info ? unit.info.name : "Unnamed"}</p>
 				</div>
 				<div className="p-2">
-					<p>Produced</p>
+					<p className="font-bold">Produced</p>
 					<p>{cumulativePower ? `${power} kWh` : "--"}</p>
 				</div>
 				<div className="flex justify-between items-center">
 					<div className="p-2">
-						<p>CO2 saved</p>
+						<p className="font-bold">CO2 saved</p>
 						<p>{cumulativePower ? `${co2} kg` : "--"}</p>
 					</div>
 					<Button asChild className="p-1 -m-2 h-full rounded-l-none">

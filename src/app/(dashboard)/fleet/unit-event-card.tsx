@@ -1,13 +1,9 @@
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getUnitInfo, getUnitLatestEvent } from "@/lib/data";
-import { cn } from "@/lib/utils";
 import { BatteryCharging, Sun } from "lucide-react";
 
-export default async function UnitEventCard({
-	imei,
-	light,
-}: { imei: string; light?: boolean }) {
+export default async function UnitEventCard({ imei }: { imei: string }) {
 	const unitEvent = await getUnitLatestEvent(imei);
 	const vehicle = await getUnitInfo(imei);
 
@@ -33,20 +29,9 @@ export default async function UnitEventCard({
 				</p>
 			</div>
 			<div className="grid grid-cols-3 gap-2">
+				<EventStatCard value={unitEvent.panel_volt} unit="V" title="Volts" />
+				<EventStatCard value={unitEvent.panel_amps} unit="A" title="Amps" />
 				<EventStatCard
-					light={light}
-					value={unitEvent.panel_volt}
-					unit="V"
-					title="Volts"
-				/>
-				<EventStatCard
-					light={light}
-					value={unitEvent.panel_amps}
-					unit="A"
-					title="Amps"
-				/>
-				<EventStatCard
-					light={light}
 					value={unitEvent.panel_volt * unitEvent.panel_amps}
 					unit="W"
 					title="Watts"
@@ -62,18 +47,8 @@ export default async function UnitEventCard({
 				</p>
 			</div>
 			<div className="grid grid-cols-3 gap-2">
-				<EventStatCard
-					light={light}
-					value={unitEvent.battery_volt}
-					unit="V"
-					title="Volts"
-				/>
-				<EventStatCard
-					light={light}
-					value={unitEvent.battery_amps}
-					unit="A"
-					title="Amps"
-				/>
+				<EventStatCard value={unitEvent.battery_volt} unit="V" title="Volts" />
+				<EventStatCard value={unitEvent.battery_amps} unit="A" title="Amps" />
 			</div>
 		</div>
 	);
@@ -83,15 +58,9 @@ function EventStatCard({
 	value,
 	unit,
 	title,
-	light,
-}: { value: number; unit: string; title: string; light?: boolean }) {
+}: { value: number; unit: string; title: string }) {
 	return (
-		<Card
-			className={cn(
-				"p-2 min-w-16 min-h-16 aspect-square",
-				light ? "" : "bg-neutral-100 dark:bg-neutral-800",
-			)}
-		>
+		<Card className="p-2 min-w-16 min-h-16 aspect-square bg-neutral-100 dark:bg-neutral-800">
 			<p>{title}</p>
 			<p className="font-bold">
 				{value.toLocaleString("da-DK", {
